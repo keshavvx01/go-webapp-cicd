@@ -1,0 +1,11 @@
+# Go
+*.exe
+*.out
+*.test
+go.sum
+
+# Env
+.env
+
+# Logs
+*.log
