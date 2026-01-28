@@ -20,7 +20,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
+                sh '/usr/bin/docker build -t $DOCKER_IMAGE:$DOCKER_TAG .'
             }
         }
 
@@ -32,8 +32,8 @@ pipeline {
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
                     sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push $DOCKER_IMAGE:$DOCKER_TAG
+                        echo "$DOCKER_PASS" | /usr/bin/docker login -u "$DOCKER_USER" --password-stdin
+/usr/bin/docker push $DOCKER_IMAGE:$DOCKER_TAG
                     '''
                 }
             }
@@ -42,9 +42,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 sh '''
-                    docker stop $CONTAINER_NAME || true
-                    docker rm $CONTAINER_NAME || true
-                    docker run -d -p 9090:9090 --name $CONTAINER_NAME $DOCKER_IMAGE:$DOCKER_TAG
+                    /usr/bin/docker stop $CONTAINER_NAME || true
+/usr/bin/docker rm $CONTAINER_NAME || true
+/usr/bin/docker run -d -p 9090:9090 --name $CONTAINER_NAME $DOCKER_IMAGE:$DOCKER_TAG
                 '''
             }
         }
